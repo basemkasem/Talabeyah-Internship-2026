@@ -53,4 +53,142 @@ If you didn't win a round, your next branch is based on someone else's code, not
 - `Repositories/` — data access only. One interface + implementation per entity (e.g. `IExampleRepository` / `InMemoryExampleRepository`). No business rules here — just get/add/update.
 - `Services/` — business logic. One interface + implementation per entity (e.g. `IExampleService` / `ExampleService`). Depends on a repository via constructor injection, applies validation/rules, then calls the repository.
 
-`Entities/Example.cs`, `Repositories/IExampleRepository.cs` + `InMemoryExampleRepository.cs`, and `Services/IExampleService.cs` + `ExampleService.cs` are a worked example of this pattern — follow it for the real entities.
+`Entities/Example.cs`, `Repositories/IExampleRepository.cs` + `InMemoryExampleRepository.cs`, and `S# Task 1 — Git/GitHub, OOP & SOLID
+
+## Task 1.1 — Repo Setup & Branching (Git/GitHub)
+
+Clone the shared `eshop` repository. The repository is an empty skeleton with `main` and `develop` branches already created.
+
+### Requirements
+
+* Clone the repository.
+* Checkout `main`.
+* Create a feature branch:
+
+  ```text
+  feature/round1-<yourname>
+  ```
+
+  based on `main`.
+* Commit the domain model in small, logical commits.
+
+  * Minimum: **one entity per commit**.
+* Implement one entity (e.g. `Category`) on a separate branch:
+
+  ```text
+  feature/round1-<yourname>-category
+  ```
+* Commit the `Category` implementation on that branch.
+* Cherry-pick the `Category` commit into your main feature branch.
+* Open a Pull Request into:
+
+  * `main`
+  * `develop`
+* Add a clear description to the PR. This PR is your competition entry.
+
+### Acceptance Criteria
+
+* The PR is open.
+* The cherry-picked commit is visible in the Git log.
+
+---
+
+## Task 1.2 — Domain Model with OOP (OOP)
+
+Model the following domain entities as C# classes:
+
+* `Product`
+* `Category`
+* `Customer`
+* `Cart`
+* `Order`
+
+### Requirements
+
+Apply proper OOP principles:
+
+* Use constructors to guarantee valid object creation.
+* Use encapsulation.
+* Control state mutation through meaningful methods.
+* Avoid exposing raw mutable state.
+* Keep responsibilities within the appropriate entities.
+
+### Notification Hierarchy
+
+Create an abstract `Notification` base class containing:
+
+```csharp
+SendConfirmation()
+```
+
+Create two subclasses:
+
+* `EmailNotification`
+* `SmsNotification`
+
+For now, both implementations should be stubs that simply use:
+
+```csharp
+Console.WriteLine(...)
+```
+
+No real email or SMS sending is required.
+
+### ISummarizable
+
+Create an interface:
+
+```csharp
+ISummarizable
+```
+
+It should define a `Summarize` method.
+
+Implement `ISummarizable` in different entities where it makes sense.
+
+### Acceptance Criteria
+
+* Entities demonstrate proper OOP principles.
+* Encapsulation is properly applied.
+* Inheritance and polymorphism are meaningful rather than artificial.
+* Responsibilities are appropriately distributed.
+* The design follows SOLID principles.
+
+---
+
+## Task 1.3 — SOLID 
+
+Implement an `OrderProcessor` responsible for placing an order.
+
+The order-processing workflow should:
+
+1. Validate stock.
+2. Calculate the order total.
+
+   * Apply any applicable discount.
+3. Save the order.
+4. Send a confirmation notification.
+
+### Requirements
+
+Design the supporting class structure yourself.
+
+Apply SOLID principles throughout the implementation.
+
+`OrderProcessor` must:
+
+* Depend on abstractions rather than concrete implementations.
+* Receive its dependencies through **constructor injection**.
+* Avoid directly creating infrastructure dependencies such as repositories or notification implementations.
+
+For example, dependencies should be represented through interfaces/abstractions where appropriate.
+
+### Acceptance Criteria
+
+* SOLID principles are clearly applied.
+* `OrderProcessor` depends on abstractions, not concrete classes.
+* Dependencies are provided through constructor injection.
+* Each component has a clear and focused responsibility.
+* The design is easy to extend and test.
+ervices/IExampleService.cs` + `ExampleService.cs` are a worked example of this pattern — follow it for the real entities.
+
