@@ -29,12 +29,7 @@ public class Customer : ISummarizable
         Email = email;
         PasswordHash = passwordHash;
     }
-
-    public void AddOrder(Order order)
-    {
-        Orders.Add(order);
-    }
-
+    
     public string Summarize()
     {
         return $"Customer: {Name}, Email: {Email}";
