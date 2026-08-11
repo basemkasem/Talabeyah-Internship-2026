@@ -23,11 +23,11 @@ public class OrderProcessor
         _notification = notification;
     }
 
-    public Order PlaceOrder(Customer customer, Cart cart)
+    public Order PlaceOrder(Cart cart)
     {
-        if (customer is null)
-            throw new ArgumentNullException(nameof(customer));
-        
+        if (cart is null)
+            throw new ArgumentNullException(nameof(cart));
+
         if (cart.Items.Count == 0)
             throw new InvalidOperationException("Cart is empty.");
 
@@ -41,7 +41,7 @@ public class OrderProcessor
 
         var total = _discountService.Apply(subtotal);
 
-        var order = new Order(Guid.NewGuid(), "Pending", 0m, customer);
+        var order = new Order(Guid.NewGuid(), "Pending", 0m, cart.CustomerId);
 
         foreach (var item in cart.Items)
         {
@@ -52,7 +52,6 @@ public class OrderProcessor
         order.SetTotalAmount(total);
 
         _orderRepository.Add(order);
-        customer.AddOrder(order);
         _notification.SendConfirmation();
 
         return order;

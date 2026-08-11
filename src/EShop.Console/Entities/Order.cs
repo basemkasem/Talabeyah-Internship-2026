@@ -12,7 +12,7 @@ public class Order : ISummarizable
     public Guid CustomerId { get; private set; }
     public Customer Customer { get; private set; }
 
-    public Order(Guid id, string status, decimal totalAmount, Customer customer)
+    public Order(Guid id, string status, decimal totalAmount, Guid customerId)
     {
         if (id == Guid.Empty)
             throw new ArgumentException("Id cannot be empty");
@@ -20,15 +20,13 @@ public class Order : ISummarizable
         if (string.IsNullOrWhiteSpace(status))
             throw new ArgumentException("Status cannot be null or whitespace.");
 
-        if (customer is null)
-            throw new ArgumentNullException(nameof(customer));
-
+        if (customerId == Guid.Empty)
+            throw new ArgumentException("Customer Id cannot be empty");
         Id = id;
         Status = status;
         TotalAmount = totalAmount;
         CreatedAt = DateTime.Now;
-        Customer = customer;
-        CustomerId = customer.Id;
+        CustomerId = customerId;
     }
 
     public void AddItem(Product product, int quantity)

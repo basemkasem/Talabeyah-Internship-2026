@@ -25,7 +25,7 @@ var orderProcessor = new OrderProcessor(
     orderRepository,
     notification);
 
-var order = orderProcessor.PlaceOrder(customer, cart);
+var order = orderProcessor.PlaceOrder(cart);
 
 Console.WriteLine(product.Summarize());
 Console.WriteLine(cart.Summarize());
