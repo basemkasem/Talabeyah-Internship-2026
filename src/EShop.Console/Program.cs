@@ -1,5 +1,7 @@
 using EShop.Console.Entities;
 using EShop.Console.Notifications;
+using EShop.Console.Repositories;
+using EShop.Console.Services;
 
 var parentCategory = new Category(Guid.NewGuid(), "Electronics", null);
 var phones = new Category(Guid.NewGuid(), "Phones", parentCategory.Id);
@@ -12,16 +14,20 @@ var customer = new Customer(Guid.NewGuid(), "Baselyosry", "baselyosry@gmail.com"
 var cart = new Cart(Guid.NewGuid(), customer.Id);
 cart.AddItem(product, 1);
 
-var order = new Order(Guid.NewGuid(), "Pending", 0m, customer);
-order.AddItem(product, 1);
-customer.AddOrder(order);
+IStockValidator stockValidator = new StockValidator();
+IDiscountService discountService = new PercentageDiscount(10);
+IOrderRepository orderRepository = new InMemoryOrderRepository();
+Notification notification = new EmailNotification();
+
+var orderProcessor = new OrderProcessor(
+    stockValidator,
+    discountService,
+    orderRepository,
+    notification);
+
+var order = orderProcessor.PlaceOrder(customer, cart);
 
 Console.WriteLine(product.Summarize());
 Console.WriteLine(cart.Summarize());
 Console.WriteLine(order.Summarize());
 Console.WriteLine(customer.Summarize());
-
-Notification email = new EmailNotification();
-Notification sms = new SmsNotification();
-email.SendConfirmation();
-sms.SendConfirmation();
