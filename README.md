@@ -18,11 +18,11 @@ See [Tasks](#tasks) below for the full task list and acceptance criteria.
 
 Everyone converges on one winning PR each round — a competition and a shared build.
 
-1. Each round, everyone starts from the current `develop` (already contains the previous round's winning PR — except Round 1, where it's just this skeleton).
-2. Create a fresh branch off latest `develop`: `feature/round<N>-<yourname>`.
-3. At the end of the round, open a PR from your branch → `develop`.
+1. Each round, everyone starts from the current `main` (already contains the previous round's winning PR — except Round 1, where it's just this skeleton).
+2. Create a fresh branch off latest `main`: `feature/round<N>-<yourname>`.
+3. At the end of the round, open a PR from your branch → `main` and `develop`.
 4. PRs are judged against that round's acceptance criteria; one winner merges into `develop`.
-5. Before the next round starts, everyone pulls the updated `develop` and branches off it again — including non-winners, who continue on top of the winning implementation rather than their own.
+5. Before the next round starts, everyone pulls the updated `main` and `develop` and branches off it again — including non-winners, who continue on top of the winning implementation rather than their own.
 
 If you didn't win a round, your next branch is based on someone else's code, not yours. Skim the merged PR's diff before starting the next round's task.
 
