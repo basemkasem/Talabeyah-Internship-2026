@@ -42,6 +42,14 @@ public class Order : ISummarizable
         Status = status;
     }
 
+    public void SetTotalAmount(decimal totalAmount)
+    {
+        if (totalAmount < 0)
+            throw new ArgumentException("Total amount cannot be less than zero.");
+
+        TotalAmount = totalAmount;
+    }
+
     public string Summarize()
     {
         return $"Order {Id}: {Status}, Total: {TotalAmount}";
