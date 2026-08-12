@@ -203,6 +203,7 @@ Create a Money struct (Amount, Currency) used for Product.Price and Order.TotalA
 Task 2.2 — foreach / yield (deferred execution)  
 Build product list iterator: GetProducts() implemented with yield return, pulling from an in-memory list, so data are only materialized when enumerated.
 Prove deferred execution: add a Console.WriteLine inside the iterator and show it only fires when you actually foreach over the result, not when you call the method.
+- Bonus task : create your own ForEach method "CustomForEach" which enumerate data correctly like C# foreach
 
 Task 2.3 — string vs. StringBuilder  
 Build an GetOrderReceipt in OrderService that generates a text receipt (header, line items, total) for an order with 50+ items.
