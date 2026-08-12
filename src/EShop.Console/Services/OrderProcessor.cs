@@ -1,6 +1,5 @@
 using EShop.Console.Entities;
 using EShop.Console.Notifications;
-using EShop.Console.Repositories;
 
 namespace EShop.Console.Services;
 
@@ -8,18 +7,15 @@ public class OrderProcessor
 {
     private readonly IStockValidator _stockValidator;
     private readonly IDiscountService _discountService;
-    private readonly IOrderRepository _orderRepository;
     private readonly Notification _notification;
 
     public OrderProcessor(
         IStockValidator stockValidator,
         IDiscountService discountService,
-        IOrderRepository orderRepository,
         Notification notification)
     {
         _stockValidator = stockValidator;
         _discountService = discountService;
-        _orderRepository = orderRepository;
         _notification = notification;
     }
 
@@ -59,8 +55,7 @@ public class OrderProcessor
         }
 
         order.SetTotalAmount(total);
-
-        _orderRepository.Add(order);
+        
         _notification.SendConfirmation();
 
         return order;

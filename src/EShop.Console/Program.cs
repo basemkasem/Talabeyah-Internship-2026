@@ -1,6 +1,5 @@
 using EShop.Console.Entities;
 using EShop.Console.Notifications;
-using EShop.Console.Repositories;
 using EShop.Console.Services;
 
 var parentCategory = new Category(Guid.NewGuid(), "Electronics", null);
@@ -18,13 +17,11 @@ var products = new List<Product>(){product};
 
 IStockValidator stockValidator = new StockValidator();
 IDiscountService discountService = new PercentageDiscount(10);
-IOrderRepository orderRepository = new InMemoryOrderRepository();
 Notification notification = new EmailNotification();
 
 var orderProcessor = new OrderProcessor(
     stockValidator,
     discountService,
-    orderRepository,
     notification);
 
 var order = orderProcessor.PlaceOrder(cart, products);
