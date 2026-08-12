@@ -23,7 +23,7 @@ public class OrderProcessor
         _notification = notification;
     }
 
-    public Order PlaceOrder(Cart cart)
+    public Order PlaceOrder(Cart cart, List<Product> products)
     {
         if (cart is null)
             throw new ArgumentNullException(nameof(cart));
@@ -31,12 +31,16 @@ public class OrderProcessor
         if (cart.Items.Count == 0)
             throw new InvalidOperationException("Cart is empty.");
 
-        _stockValidator.Validate(cart);
+        _stockValidator.Validate(cart, products);
 
         decimal subtotal = 0;
         foreach (var item in cart.Items)
         {
-            subtotal += item.Product.Price * item.Quantity;
+            var product = products.FirstOrDefault(p => p.Id == item.ProductId);
+            if (product is null)
+                throw new InvalidOperationException($"Product {item.ProductId} not found.");
+            
+            subtotal += product.Price * item.Quantity;
         }
 
         var total = _discountService.Apply(subtotal);
@@ -45,8 +49,13 @@ public class OrderProcessor
 
         foreach (var item in cart.Items)
         {
-            order.AddItem(item.Product, item.Quantity);
-            item.Product.ReduceStock(item.Quantity);
+            var product = products.FirstOrDefault(p => p.Id == item.ProductId);
+
+            if (product is null)
+                throw new InvalidOperationException($"Product '{item.ProductId}' not found.");
+
+            order.AddItem(product, item.Quantity);
+            product.ReduceStock(item.Quantity);
         }
 
         order.SetTotalAmount(total);
