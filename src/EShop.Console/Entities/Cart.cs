@@ -20,9 +20,9 @@ public class Cart : ISummarizable
         CustomerId = customerId;
     }
 
-    public void AddItem(Product product, int quantity)
+    public void AddItem(Guid productId, int quantity)
     {
-        Items.Add(new CartItem(Guid.NewGuid(), Id, product, quantity));
+        Items.Add(new CartItem(Guid.NewGuid(), Id, productId, quantity));
     }
 
     public void RemoveItem(Guid productId)
