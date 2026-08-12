@@ -4,5 +4,5 @@ namespace EShop.Console.Services;
 
 public interface IStockValidator
 {
-    void Validate(Cart cart);
+    void Validate(Cart cart, List<Product> products);
 }
