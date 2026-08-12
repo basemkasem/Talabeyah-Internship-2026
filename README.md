@@ -192,3 +192,23 @@ For example, dependencies should be represented through interfaces/abstractions 
 * The design is easy to extend and test.
 ervices/IExampleService.cs` + `ExampleService.cs` are a worked example of this pattern — follow it for the real entities.
 
+---
+
+## Task 2 — C# Language Deep Dive
+
+Task 2.1 — record / class / struct (value vs. reference semantics)  
+Create ProductDto as a record with to get productName, UnitPrice, StockQuantity. 
+Create a Money struct (Amount, Currency) used for Product.Price and Order.TotalAmount instead of a raw decimal.
+
+Task 2.2 — foreach / yield (deferred execution)  
+Build a paginated product list iterator: GetProducts() implemented with yield return, pulling from an in-memory list, so pages are only materialized when enumerated.
+Prove deferred execution: add a Console.WriteLine inside the iterator and show it only fires when you actually foreach over the result, not when you call the method.
+
+Task 2.3 — string vs. StringBuilder  
+Build an GetOrderReceipt in OrderService that generates a text receipt (header, line items, total) for an order with 50+ items.
+Implement one version with string += in a loop and one with StringBuilder.
+
+Task 2.4 — Extension methods  
+create Extention directory with extension methods on Cart entity : .TotalPrice() (sums Quantity * Price)
+
+---
