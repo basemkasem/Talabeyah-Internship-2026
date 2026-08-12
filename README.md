@@ -201,7 +201,7 @@ Create ProductDto as a record with to get productName, UnitPrice, StockQuantity.
 Create a Money struct (Amount, Currency) used for Product.Price and Order.TotalAmount instead of a raw decimal.
 
 Task 2.2 — foreach / yield (deferred execution)  
-Build a paginated product list iterator: GetProducts() implemented with yield return, pulling from an in-memory list, so pages are only materialized when enumerated.
+Build product list iterator: GetProducts() implemented with yield return, pulling from an in-memory list, so data are only materialized when enumerated.
 Prove deferred execution: add a Console.WriteLine inside the iterator and show it only fires when you actually foreach over the result, not when you call the method.
 
 Task 2.3 — string vs. StringBuilder  
