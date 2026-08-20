@@ -7,7 +7,7 @@ public class Result<T>
     public string? Error { get; private init; }
     public T? Data { get; private init; }
 
-    public static Result<T> Success(T data)
+    public static Result<T> Success(T? data)
     {
         return new Result<T>()
         {
