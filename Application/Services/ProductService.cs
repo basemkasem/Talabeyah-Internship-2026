@@ -1,4 +1,6 @@
+using Application.Common;
 using Application.Dtos;
+using Application.Errors;
 using Application.Interfaces;
 using Application.Shared;
 using Domain.Models;
@@ -10,41 +12,37 @@ public class ProductService(IProductRepository productRepository) : IProductServ
 {
     public async Task<Result<Guid>> Add(ProductDto productDto)
     {
-        var validationResult = ValidateProductDto<Guid>(productDto);
-        if (!validationResult?.IsSuccess ?? false)
-        {
-            return validationResult;
-        }
+        var dtoValidationResult = ValidateProductDto<Guid>(productDto);
+        if (!dtoValidationResult?.IsSuccess ?? false)
+            return dtoValidationResult;
 
         var product = productRepository.Add(productDto);
         await productRepository.SaveChangesAsync();
-        return Result<Guid>.Success(product.Id);
+        return product.Id;
     }
 
     public async Task<Result<ProductDto>> GetById(Guid id)
     {
         var product = await productRepository.GetById(id);
-        if (product is not null)
-        {
-            var productDto = new ProductDto(product.Name, product.Price, product.StockQuantity, product.Description);
-            return Result<ProductDto>.Success(productDto);
-        }
+        if (product is null)
+            return ProductErrors.ProductNotFound(id);
 
-        return Result<ProductDto>.NotFound($"Product with id '{id}' is not exist.");
+        var productDto = new ProductDto(product.Name, product.Price, product.StockQuantity, product.Description);
+        return productDto;
     }
 
     public async Task<Result<List<Product>>> GetListPaginated(PaginationParams paginationParams)
     {
         var products = await productRepository.GetListPaginated(paginationParams);
-        return Result<List<Product>>.Success(products);
+        return products;
     }
 
-    public async Task<Result<string>> Update(Guid id, ProductDto productDto)
+    public async Task<Result> Update(Guid id, ProductDto productDto)
     {
         var product = await productRepository.GetById(id);
         if (product is null)
         {
-            return Result<string>.NotFound($"Product with id '{id}' is not exist.");
+            return ProductErrors.ProductNotFound(id);
         }
 
         var validationResult = ValidateProductDto<string>(productDto);
@@ -56,44 +54,44 @@ public class ProductService(IProductRepository productRepository) : IProductServ
         await productRepository.Update(id, productDto);
 
         await productRepository.SaveChangesAsync();
-        return Result<string>.Success(null);
+        return Result.Success();
     }
 
     private Result<T>? ValidateProductDto<T>(ProductDto productDto)
     {
         if (productDto.Name.Length < 3)
         {
-            return Result<T>.Fail("Product name length should be 3 characters at least.");
+            return ProductErrors.NameTooShort();
         }
 
         if (productDto.Name.Length > 150)
         {
-            return Result<T>.Fail("Product name length can't be more than 150 characters");
+            return ProductErrors.NameExceedMaxLength();
         }
 
         if (productDto.Price < 0)
         {
-            return Result<T>.Fail("Product price can't be negative.");
+            return ProductErrors.PriceIsNegative();
         }
 
         if (productDto.StockQuantity < 0)
         {
-            return Result<T>.Fail("Product quantity can't be negative.");
+            return ProductErrors.StockQuantityIsNegative();
         }
 
         if (!productDto.Description.IsNullOrEmpty())
         {
             if (productDto.Description?.Length < 3)
             {
-                return Result<T>.Fail("Product description length should be 3 characters at least.");
+                return ProductErrors.DescriptionTooShort();
             }
 
             if (productDto.Description?.Length > 400)
             {
-                return Result<T>.Fail("Product description length can't be more than 400 characters");
+                return ProductErrors.DescriptionExceedMaxLength();
             }
         }
-        
+
         return null;
     }
 }

@@ -1,6 +1,7 @@
 using Application.Dtos;
 using Application.Services;
 using Application.Shared;
+using EShopBackendApi.Extensions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EShopBackendApi.Controllers;
@@ -12,55 +13,40 @@ public class ProductController(IProductService productService) : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetListPaginated([FromQuery] PaginationParams paginationParams)
     {
-        var products = await productService.GetListPaginated(paginationParams);
-        return Ok(products.Data);
+        var result = await productService.GetListPaginated(paginationParams);
+        return result.Match(
+            products => Ok(products),
+            error => error.ToActionResult(this)
+        );
     }
 
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetById(Guid id)
     {
-        var productResult = await productService.GetById(id);
-        if (!productResult.IsSuccess)
-        {
-            if (productResult.ReturnType == ReturnType.NotFound)
-            {
-                return NotFound(productResult.Error);
-            }
-            
-            return BadRequest(productResult.Error);
-        }
-
-        return Ok(productResult.Data);
+        var result = await productService.GetById(id);
+        return result.Match(
+            productDto => Ok(productDto),
+            error => error.ToActionResult(this)
+        );
     }
 
     [HttpPost]
     public async Task<IActionResult> Add(ProductDto productDto)
     {
-        var idResult = await productService.Add(productDto);
-        if (!idResult.IsSuccess)
-        {
-            BadRequest(idResult.Error);
-        }
-
-        return Ok(idResult.Data);
+        var result = await productService.Add(productDto);
+        return result.Match(
+            id => Ok(id),
+            error => error.ToActionResult(this)
+        );
     }
 
     [HttpPut("{id:guid}")]
     public async Task<IActionResult> Update(Guid id, ProductDto productDto)
     {
-       var updateResult = await productService.Update(id, productDto);
-
-       if (!updateResult.IsSuccess)
-       {
-           if (updateResult.ReturnType == ReturnType.NotFound)
-           {
-               return NotFound(updateResult.Error);
-           }
-
-           return BadRequest(updateResult.Error);
-       }
-       
-       return Ok(updateResult.Data);
+        var result = await productService.Update(id, productDto);
+        return result.Match(
+            () => Ok(),
+            error => error.ToActionResult(this)
+        );
     }
-    
 }
