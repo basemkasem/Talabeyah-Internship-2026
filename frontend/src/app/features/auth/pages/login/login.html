@@ -1,17 +1,39 @@
 <div class="card mt-5 w-50 m-auto">
-  <div class="card-title m-3 text-center">Login Page</div>
+  <h2 class="card-title mt-5 text-center">Login Page</h2>
   <div class="card-body">
-    <form>
+    <form [formRoot]="loginForm">
       <div class="mb-3">
         <label for="exampleInputUsername" class="form-label">Username</label>
-        <input type="text" class="form-control" id="exampleInputUsername" />
+        <input type="text" class="form-control" id="exampleInputUsername" [formField]="loginForm.username" />
         <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div> -->
+        @if(loginForm.username().touched()&& loginForm.username().invalid()){
+            <div>
+                <p class="text-danger mt-1">{{loginForm.username().errors().at(0)?.message}}</p>
+            </div>
+          }
       </div>
       <div class="mb-3">
         <label for="exampleInputPassword1" class="form-label">Password</label>
-        <input type="password" class="form-control" id="exampleInputPassword1" />
+        <input type="password" class="form-control" [formField]="loginForm.password" />
+                @if(loginForm.password().touched()&& loginForm.password().invalid()){
+            <div>
+                <p class="text-danger mt-1">{{loginForm.password ().errors().at(0)?.message}}</p>
+            </div>
+          }
       </div>
-      <button type="submit" class="btn btn-primary">Submit</button>
+      <button type="submit" class="btn btn-primary" [disabled]="loginForm().submitting()">
+        @if (loginForm().submitting())
+        {
+          submitting...
+        } @else{
+          submit
+        }
+      </button>
+      <div #alert class="d-none mt-4 alert alert-danger"></div>
     </form>
   </div>
+  @if(isLoadingSignal()) {
+
+  }
 </div>
+
