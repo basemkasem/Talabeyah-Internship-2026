@@ -1,9 +1,12 @@
+using Application.Common;
 using Application.Dtos;
 using Application.Services;
+using EShopBackendApi.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 
 namespace EShopBackendApi.Controllers;
+
 [ApiController]
 [Route("api/[controller]")]
 public class UserController(IUserService userService) : ControllerBase
@@ -11,27 +14,20 @@ public class UserController(IUserService userService) : ControllerBase
     [HttpPost("Register")]
     public async Task<IActionResult> Register(UserDto userDto)
     {
-        var register = await userService.Register(userDto);
-        if (register.IsSuccess)
-        {
-            return Ok(register.Data);
-        }
-        if (register.ReturnType == ReturnType.NotFound)
-        {
-            return NotFound(register.Error);
-        }
-        return BadRequest(register.Error);
+        var result = await userService.Register(userDto);
+        return result.Match(
+            token => Ok(token),
+            error => error.ToActionResult(this)
+        );
     }
-    
+
     [HttpPost("Login")]
     public async Task<IActionResult> Login(UserDto userDto)
     {
         var result = await userService.Login(userDto);
-        if (result.IsSuccess)
-        {
-            return Ok(result.Data);
-        }
-
-        return NotFound(result.Error);
+        return result.Match(
+            token => Ok(token),
+            error => error.ToActionResult(this)
+        );
     }
 }
