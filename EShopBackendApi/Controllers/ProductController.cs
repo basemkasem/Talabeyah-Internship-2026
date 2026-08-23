@@ -24,10 +24,11 @@ public class ProductController(IProductService productService) : ControllerBase
     public async Task<IActionResult> GetById(Guid id)
     {
         var result = await productService.GetById(id);
-        return result.Match(
-            productDto => Ok(productDto),
-            error => error.ToActionResult(this)
-        );
+        // return result.Match(
+        //     productDto => Ok(productDto),
+        //     error => error.ToActionResult(this)
+        // );
+        return Ok(result.Data);
     }
 
     [HttpPost]
