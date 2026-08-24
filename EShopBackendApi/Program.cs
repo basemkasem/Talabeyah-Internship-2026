@@ -36,6 +36,16 @@ public class Program
                     ValidateLifetime = true
                 };
             });
+
+        builder.Services.AddCors(options =>
+            options.AddPolicy("myPolicy",
+                p =>
+                {
+                    p.AllowAnyHeader();
+                    p.AllowAnyMethod();
+                    p.AllowAnyOrigin();
+                }));
+        
         builder.Services.AddControllers();
 
         builder.Services.AddApplication();
@@ -84,6 +94,7 @@ public class Program
         {
             app.UseSwagger();
             app.UseSwaggerUI();
+            app.UseCors("myPolicy");
         }
 
         app.UseHttpsRedirection();

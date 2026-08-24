@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
 import { Observable, tap } from 'rxjs';
+import { environment } from '../../../../environments/environment.development';
 
 @Service()
 export class AuthService {
