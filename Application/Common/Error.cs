@@ -12,4 +12,7 @@ public sealed record Error(ErrorType ErrorType ,string Code, string? Description
     
     public static Error Conflict(string field, string description) =>
         new(ErrorType.Conflict, $"{field}.Conflict", description);
+
+    public static Error NotAuthorized(string code, string description) =>
+        new(ErrorType.Unauthorized, code, description);
 }
