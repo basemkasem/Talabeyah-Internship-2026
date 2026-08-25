@@ -32,6 +32,11 @@ public class ProductRepository(AppDbContext context) : IProductRepository
         return await context.Products.FindAsync(id);
     }
 
+    public Task<List<Product>> GetBulkByIds(List<Guid> ids)
+    {
+        return context.Products.Where(p => ids.Contains(p.Id)).ToListAsync();
+    }
+
     public async Task<List<Product>> GetListPaginated(PaginationParams paginationParams)
     {
         return await context.Products.Skip(paginationParams.PageNumber - 1).Take(paginationParams.PageSize).ToListAsync();

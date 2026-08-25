@@ -9,6 +9,7 @@ public interface IProductRepository
     Product Add(ProductDto userDto);
     Task Update(Guid id, ProductDto userDto);
     Task<Product?> GetById(Guid id);
+    Task<List<Product>> GetBulkByIds(List<Guid> ids);
     Task<List<Product>> GetListPaginated(PaginationParams paginationParams);
     Task SaveChangesAsync();
 }
