@@ -8,6 +8,7 @@
 
     <ItemGroup>
       <PackageReference Include="BCrypt.Net-Next" Version="4.2.0" />
+      <PackageReference Include="NGuid" Version="1.0.0" />
     </ItemGroup>
 
 </Project>
