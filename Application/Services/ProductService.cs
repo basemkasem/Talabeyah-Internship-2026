@@ -30,6 +30,15 @@ public class ProductService(IProductRepository productRepository) : IProductServ
         var productDto = new ProductDto(product.Name, product.Price, product.StockQuantity, product.Description);
         return productDto;
     }
+    
+    public async Task<Result<int>> GetProductQuantity(Guid id)
+    {
+        var product = await productRepository.GetById(id);
+        if (product is null)
+            return ProductErrors.ProductNotFound(id);
+        
+        return product.StockQuantity;
+    }
 
     public async Task<Result<List<Product>>> GetListPaginated(PaginationParams paginationParams)
     {

@@ -9,13 +9,20 @@ import { ProductCard } from "../../components/product-card/product-card";
   templateUrl: './products-list.html',
   styleUrl: './products-list.scss',
 })
-
 export class ProductsList {
   productService = inject(ProductService);
   products = signal<Product[]>([]);
   ngOnInit() {
     this.getProducts();
+    this.products().forEach((p) => {
+      let productOrderedQuantity = localStorage.getItem(p.id);
+      if (productOrderedQuantity) {
+        p.cartQuantity = parseInt(productOrderedQuantity);
+      }
+    });
   }
+
+  //order = signal<Product[]>([]);
 
   getProducts() {
     this.productService.getProducts(1, 10).subscribe(

@@ -47,15 +47,10 @@ export class Login {
     };
     this.authService.login(requestParams).subscribe({
       next: (value) => {
-        alert(value);
         this.router.navigate(['/products']);
-
       },
       error: (err) => {
-        // const summaryAlert = document.getElementById('summary-alert') as HTMLElement;
-        // summaryAlert?.classList.remove('d-none');
-        // summaryAlert?.insertAdjacentElement('afterend', err.error.message[1]); //message is empty for now
-        this.alert()?.nativeElement
+        console.error(err);
       },
     });
   }

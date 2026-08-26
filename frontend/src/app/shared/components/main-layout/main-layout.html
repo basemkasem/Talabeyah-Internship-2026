@@ -1,3 +1,21 @@
-<div class="container p-4">
-    <router-outlet></router-outlet>
+<nav class="navbar fixed-top navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">EShop</a>
+    <button class="navbar-toggler" type="button">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-link active" href="/products">Home</a>
+        <div class="d-inline-flex">
+          <a class="nav-link" href="#">Checkout</a>
+          <a class="nav-link" href="/login">Login</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="container p-4 mt-5">
+  <router-outlet></router-outlet>
 </div>

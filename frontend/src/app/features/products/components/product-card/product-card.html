@@ -1,13 +1,24 @@
 <div class="card m-3" style="width: 24rem;">
-    <img class="card-img-top object-fit-scale" style="height: 12rem;" src="assets/images/61WOYxMcVxL.jpg" alt="Card image cap">
-    <div class="card-body">
-        <h5 class="card-title">{{ itemName() }}</h5>
-        <p class="card-text text-secondary">{{ itemDescription() }}</p>
-        <div class="container">
-            <div class="row justify-content-between">
-                <p class="card-text d-inline col-4">${{ itemPrice() }}</p>
-                <a href="#" class="btn btn-success col-2">Add</a>
-            </div>
-        </div>
+  <img class="card-img-top object-fit-scale" style="height: 12rem;" src="assets/images/61WOYxMcVxL.jpg"
+       alt="Card image cap">
+  <div class="card-body">
+    <h5 class="card-title">{{ itemName() }}</h5>
+    <p class="card-text text-secondary">{{ itemDescription() }}</p>
+    <div class="container">
+      <div class="row justify-content-between">
+        <p class="card-text d-inline col-4">${{ itemPrice() }}</p>
+        @if (isAdded()) {
+          <div class="btn-group w-50 d-inline-flex">
+            <button type="button" class="btn btn-outline-danger" (click)="btnDecrease()">-</button>
+            <input type="number" min="0" class="w-50 text-center" value="1" #displayQuantityNumber />
+            <button type="button" class="btn btn-success" (click)="btnIncrease()">+</button>
+          </div>
+
+        } @else {
+          <button class="btn btn-success col-2" (click)="isAdded.set(true) ">Add</button>
+        }
+
+      </div>
     </div>
+  </div>
 </div>

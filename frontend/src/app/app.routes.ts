@@ -1,13 +1,7 @@
 import { Routes } from '@angular/router';
-import { Login } from './features/auth/pages/login/login';
-import { ProductsList } from './features/products/pages/products-list/products-list';
 import { MainLayout } from './shared/components/main-layout/main-layout';
 
 export const routes: Routes = [
-  {
-    path: 'login',
-    component: Login,
-  },
   {
     path: '',
     component: MainLayout,
@@ -24,6 +18,12 @@ export const routes: Routes = [
             (m) => m.ProductsList,
           ),
       },
+      {
+        path: 'login',
+        loadComponent: () =>
+          import('./features/auth/pages/login/login')
+            .then(m => m.Login)
+      }
     ],
   },
 ];
