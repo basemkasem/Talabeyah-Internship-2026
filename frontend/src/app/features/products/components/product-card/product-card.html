@@ -10,12 +10,12 @@
         @if (isAdded()) {
           <div class="btn-group w-50 d-inline-flex">
             <button type="button" class="btn btn-outline-danger" (click)="btnDecrease()">-</button>
-            <input type="number" min="0" class="w-50 text-center" value="1" #displayQuantityNumber />
+            <input type="number" min="0" class="w-50 text-center" value="{{ quantity() }}" />
             <button type="button" class="btn btn-success" (click)="btnIncrease()">+</button>
           </div>
 
         } @else {
-          <button class="btn btn-success col-2" (click)="isAdded.set(true) ">Add</button>
+          <button class="btn btn-success col-2" (click)="isAdded.set(true); btnIncrease();">Add</button>
         }
 
       </div>

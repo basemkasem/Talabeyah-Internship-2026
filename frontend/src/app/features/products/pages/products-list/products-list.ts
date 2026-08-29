@@ -14,12 +14,6 @@ export class ProductsList {
   products = signal<Product[]>([]);
   ngOnInit() {
     this.getProducts();
-    this.products().forEach((p) => {
-      let productOrderedQuantity = localStorage.getItem(p.id);
-      if (productOrderedQuantity) {
-        p.cartQuantity = parseInt(productOrderedQuantity);
-      }
-    });
   }
 
   //order = signal<Product[]>([]);

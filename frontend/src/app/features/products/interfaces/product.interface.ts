@@ -1,8 +1,7 @@
 export interface Product {
-    id: string;
-    name: string;
-    price: number;
-    stockQuantity: number;
-    description: string;
-    cartQuantity: number;
+  id: string;
+  name: string;
+  price: number;
+  stockQuantity: number;
+  description: string;
 }

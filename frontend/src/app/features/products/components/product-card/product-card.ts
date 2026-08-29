@@ -16,70 +16,41 @@ export class ProductCard {
   itemName = input<string>();
   itemDescription = input<string>('No description for this item...');
   itemPrice = input<number>();
-  cartQuantity = input<number>();
+  itemQuantity = input<number>();
+
+  quantity = signal<number>(0);
 
   isAdded = signal<boolean>(false);
 
-  displayQuantityNumber = viewChild.required<ElementRef<HTMLInputElement>>('displayQuantityNumber');
-
-  // ngOnInit() {
-  //   if(this.cartQuantity !== undefined){
-  //     this.isAdded.set(true);
-  //     this.displayQuantityNumber().nativeElement.valueAsNumber = this.cartQuantity() as number;
-  //   }
-  // }
+  ngOnInit() {
+    this.quantity.set(Number(localStorage.getItem(this.itemId() as string)) || 0);
+    if(this.quantity() > 0){
+      this.isAdded.set(true);
+    }
+  }
   btnIncrease() {
-    let value = this.displayQuantityNumber().nativeElement.valueAsNumber + 1;
-    let isAvailable = this.availableStock(this.itemId() as string, value);
-    if (isAvailable) {
-      this.displayQuantityNumber().nativeElement.valueAsNumber += 1;
+    if (this.availableStock()) {
+      this.quantity.set(this.quantity() + 1);
       localStorage.setItem(
         this.itemId() as string,
-        this.displayQuantityNumber().nativeElement.valueAsNumber.toString(),
+        this.quantity().toString()
       );
     } else {
       console.error('not enough stock');
     }
   }
   btnDecrease() {
-    let value = this.displayQuantityNumber().nativeElement.valueAsNumber;
-    if (value > 1) {
-      this.displayQuantityNumber().nativeElement.valueAsNumber -= 1;
-      localStorage.setItem(
-        this.itemId() as string,
-        this.displayQuantityNumber().nativeElement.valueAsNumber.toString(),
-      );
+    if (this.quantity() > 1) {
+      this.quantity.set(this.quantity() - 1);
+      localStorage.setItem(this.itemId() as string, this.quantity().toString());
     } else {
       localStorage.removeItem(this.itemId() as string);
       this.isAdded.set(false);
+      this.quantity.set(0);
     }
   }
 
-  quantity = 1;
-  quantitySignal = signal<number>(0);
-  availableStock(productId: string, currentQuantity: number): boolean {
-
-    this.productService.addProductItemToLocalStorage(productId).subscribe(
-      (value) => {
-        this.quantity = value;
-      },
-      (error) =>{
-        console.error(error)
-        return false;
-      },
-    );
-    return currentQuantity <= this.quantity;
-  }
-
-  changeToStepper() {
-    if (this.availableStock(this.itemId() as string, 1)) {
-      this.isAdded.set(true);
-      localStorage.setItem(
-        this.itemId() as string,
-        '1'
-      );
-    } else {
-      console.error('not enough stock');
-    }
+  availableStock(): boolean {
+    return this.itemQuantity() as number >= this.quantity();
   }
 }
