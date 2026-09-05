@@ -7,13 +7,14 @@ import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { TokenInterceptor } from './shared/interceptors/token.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
     importProvidersFrom(NgbModule),
-    provideHttpClient()
+    provideHttpClient(withInterceptors([TokenInterceptor]))
   ],
 };
