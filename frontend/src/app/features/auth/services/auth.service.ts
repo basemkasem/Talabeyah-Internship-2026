@@ -2,16 +2,18 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { environment } from '../../../../environments/environment.development';
+import { TokenService } from '../../../shared/services/token.service';
 
 @Service()
 export class AuthService {
     private readonly apiUrl: string = environment.apiUrl + 'user/login';
 
     private http = inject(HttpClient);
+    private tokenService = inject(TokenService);
 
     login(params: LoginRequest) : Observable<string>{
         return this.http.post<string>(this.apiUrl, params, {responseType: 'text'}).pipe(
-            tap((value) => localStorage.setItem( 'userToken', value))
-        );
+            tap((value) => this.tokenService.setToken(value)
+        ));
     }
 }
