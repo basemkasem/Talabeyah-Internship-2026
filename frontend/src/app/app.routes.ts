@@ -23,6 +23,11 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/auth/pages/login/login')
             .then(m => m.Login)
+      },      {
+        path: 'checkout',
+        loadComponent: () =>
+          import('./features/checkout/pages/checkout/checkout')
+            .then(m => m.Checkout)
       }
     ],
   },

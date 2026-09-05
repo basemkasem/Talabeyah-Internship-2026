@@ -13,9 +13,4 @@ export class ProductService {
   getProducts(pageNumber: number, pageSize: number): Observable<Product[]> {
     return this.http.get<Product[]>(this.apiUrl, { params: { pageNumber, pageSize } });
   }
-
-  //TODO: Create a service to check a product quantity before increase.
-  addProductItemToLocalStorage(productId: string): Observable<number> {
-    return this.http.get<number>(this.apiUrl + productId + '/quantity', { params: { productId } });
-  }
 }

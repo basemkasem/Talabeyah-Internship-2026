@@ -1,0 +1,20 @@
+<div class="card mt-5 w-50 m-auto">
+  <h2 class="card-title mt-4 text-center">Checkout</h2>
+  <div class="card-body">
+    @if (products && products.length) {
+      @for (product of products; track $index) {
+        <hr>
+        <p>{{ product.name }}</p>
+        <p>{{ product.quantity }}</p>
+        <p>Price: {{ product.price * product.quantity }}</p>
+      }
+      <hr class="border border-black border-2 opacity-50">
+      <div class="container">
+        <p class="">Total Price: {{ totalPrice }}</p>
+        <button class="btn btn-primary" type="submit" (click)="addNewOrder()">Place an order</button>
+      </div>
+    } @else {
+      <p class="text-center">No products are added to order</p>
+    }
+  </div>
+</div>
